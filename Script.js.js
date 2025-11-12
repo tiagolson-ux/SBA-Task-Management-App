@@ -10,3 +10,10 @@ const STORAGE_KEY = 'tn_tasks_v1';
 // We try to load what was saved before. If nothing saved, start with [].
 let tasks = loadTasks();
 console.log('[INIT] Loaded tasks from localStorage:', tasks);
+
+/* ========= 2) HELP FUNCTIONS ========= */
+// saveTasks: turn tasks array into text and store it in localStorage.
+function saveTasks() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  console.log('[SAVE] Tasks saved to localStorage:', tasks);
+}
