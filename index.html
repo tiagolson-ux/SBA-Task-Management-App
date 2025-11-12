@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- SBA Task Management App (by-TN) -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Task Manager (by-TN)</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="app-header">
+      <h1> Task Manager <span class="tiny">(by-TN)</span></h1>
+      <p class="subtitle">Add tasks, pick category, set deadline, update status. Auto-Overdue + Filters + Saved in your browser.</p>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>Add a Task</h2>
+        <form id="task-form">
+          <div class="grid">
+            <label>Task Name
+              <input id="taskName" type="text" placeholder="e.g., Finish resume" required />
+            </label>
+
+            <label>Category
+              <select id="category" required>
+                <option value="" disabled selected>Select one</option>
+                <option>Work</option>
+                <option>Personal</option>
+                <option>School</option>
+                <option>Other</option>
+              </select>
+            </label>
+
+            <label>Deadline
+              <input id="deadline" type="date" required />
+            </label>
+
+            <label>Status
+              <select id="status" required>
+                <option>In Progress</option>
+                <option>Completed</option>
+              </select>
+            </label>
+          </div>
+
+          <button id="addTaskBtn" class="btn primary" type="submit">➕ Add Task</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Filter Tasks</h2>
+        <div class="grid">
+          <label>Status
+            <select id="filterStatus">
+              <option value="All" selected>All</option>
+              <option>In Progress</option>
+              <option>Completed</option>
+              <option>Overdue</option>
+            </select>
+          </label>
+
+          <label>Category
+            <select id="filterCategory">
+              <option value="All" selected>All</option>
+              <option>Work</option>
+              <option>Personal</option>
+              <option>School</option>
+              <option>Other</option>
+            </select>
+          </label>
+
+          <button id="clearFiltersBtn" class="btn">Clear Filters</button>
+          <button id="clearAllBtn" class="btn danger">🗑️ Clear ALL Tasks</button>
+        </div>
+      </section>
+
+    
+      <section class="counts">
+        <span id="countAll">All: 0</span>
+        <span id="countInProgress">In Progress: 0</span>
+        <span id="countCompleted">Completed: 0</span>
+        <span id="countOverdue">Overdue: 0</span>
+      </section>
+
+
+      <section class="card">
+        <h2>Tasks</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Category</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Update</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="taskTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <small>Built for SBA Task Management App • <strong>by-TN</strong></small>
+    </footer>
+  </body>
+</html>
