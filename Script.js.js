@@ -195,3 +195,45 @@ function render() {
   updateCounts(); // after rendering rows, refresh the counters
   console.log('[RENDER] Done. Visible rows:', visible.length);
 }
+/* ========= 5) ACTION FUNCTIONS ========= */
+// addTask: build a new task object and push to tasks array, then save+render.
+function addTask(name, category, deadline, status) {
+  const task = {
+    id: String(Date.now()), // simple unique id
+    name,
+    category,
+    deadline,               // "YYYY-MM-DD"
+    status                  // "In Progress" | "Completed" | "Overdue"
+  };
+  tasks.push(task);
+  console.log('[ADD] Task added:', task);
+  saveTasks();
+  render();
+}
+
+// updateTaskStatus: change the status for a specific id.
+function updateTaskStatus(id, newStatus) {
+  tasks = tasks.map(t => t.id === id ? { ...t, status: newStatus } : t);
+  console.log('[UPDATE] Status changed:', { id, newStatus });
+  saveTasks();
+  render();
+}
+
+// deleteTask: remove a task by id.
+function deleteTask(id) {
+  tasks = tasks.filter(t => t.id !== id);
+  console.log('[DELETE] Task removed:', id);
+  saveTasks();
+  render();
+}
+
+// clearAllTasks: wipe everything (asks for confirm).
+function clearAllTasks() {
+  const ok = confirm('Delete ALL tasks?');
+  console.log('[CLEAR ALL] Confirm result:', ok);
+  if (ok) {
+    tasks = [];
+    saveTasks();
+    render();
+  }
+}
