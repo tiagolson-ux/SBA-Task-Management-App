@@ -89,3 +89,109 @@ const countCompleted = document.getElementById('countCompleted');
 const countOverdue = document.getElementById('countOverdue');
 
 console.log('[DOM] Elements wired.');
+
+/* ========= 4) RENDER HELPERS ========= */
+// badgeFor: returns a tiny colored label for a given status.
+function badgeFor(status) {
+  if (status === 'Completed') return `<span class="badge completed">Completed</span>`;
+  if (status === 'Overdue')   return `<span class="badge overdue">Overdue</span>`;
+  return `<span class="badge progress">In Progress</span>`;
+}
+
+// updateCounts: show how many tasks are in each bucket (All, In Progress, etc.).
+function updateCounts() {
+  const all = tasks.length;
+  const ip = tasks.filter(t => t.status === 'In Progress').length;
+  const comp = tasks.filter(t => t.status === 'Completed').length;
+  const od = tasks.filter(t => t.status === 'Overdue').length;
+
+  countAll.textContent = `All: ${all}`;
+  countInProgress.textContent = `In Progress: ${ip}`;
+  countCompleted.textContent = `Completed: ${comp}`;
+  countOverdue.textContent = `Overdue: ${od}`;
+
+  console.log('[COUNTS] Updated:', { all, ip, comp, od });
+}
+
+// getFilteredTasks: look at the chosen filters and return only matching tasks.
+function getFilteredTasks() {
+  const s = filterStatus.value;   // 'All' or specific status
+  const c = filterCategory.value; // 'All' or specific category
+  const filtered = tasks.filter(t => {
+    const statusOK = (s === 'All') || (t.status === s);
+    const catOK = (c === 'All') || (t.category === c);
+    return statusOK && catOK;
+  });
+  console.log('[FILTER] Applied:', { status: s, category: c, count: filtered.length });
+  return filtered;
+}
+
+// render: rebuild the table from the current tasks + current filters.
+function render() {
+  console.log('[RENDER] Start');
+  applyAutoOverdue();       // first, make sure overdue is up to date
+  const visible = getFilteredTasks(); // then decide what to show
+  tbody.innerHTML = '';     // clear old rows
+
+  for (const t of visible) {
+    // create table row
+    const tr = document.createElement('tr');
+
+    // name cell
+    const tdName = document.createElement('td');
+    tdName.textContent = t.name;
+    tr.appendChild(tdName);
+
+    // category cell
+    const tdCat = document.createElement('td');
+    tdCat.textContent = t.category;
+    tr.appendChild(tdCat);
+
+    // deadline cell
+    const tdDead = document.createElement('td');
+    tdDead.textContent = t.deadline || '';
+    tr.appendChild(tdDead);
+
+    // status badge cell
+    const tdStatus = document.createElement('td');
+    tdStatus.innerHTML = badgeFor(t.status);
+    tr.appendChild(tdStatus);
+
+    // update status control cell (a <select>)
+    const tdUpdate = document.createElement('td');
+    const sel = document.createElement('select');
+    sel.className = 'action-select';
+    ['In Progress', 'Completed', 'Overdue'].forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt;
+      o.textContent = opt;
+      if (opt === t.status) o.selected = true;
+      sel.appendChild(o);
+    });
+    // when user changes the dropdown, update the task
+    sel.addEventListener('change', () => {
+      console.log('[ACTION] Status select changed:', { id: t.id, newStatus: sel.value });
+      updateTaskStatus(t.id, sel.value);
+    });
+    tdUpdate.appendChild(sel);
+    tr.appendChild(tdUpdate);
+
+    // delete button cell
+    const tdDel = document.createElement('td');
+    const btn = document.createElement('button');
+    btn.className = 'action-btn';
+    btn.textContent = 'Delete';
+    btn.addEventListener('click', () => {
+      console.log('[ACTION] Delete clicked:', { id: t.id, name: t.name });
+      deleteTask(t.id);
+    });
+    tdDel.appendChild(btn);
+    tr.appendChild(tdDel);
+
+    // finally put the row in the table body
+    tbody.appendChild(tr);
+  }
+
+  updateCounts(); // after rendering rows, refresh the counters
+  console.log('[RENDER] Done. Visible rows:', visible.length);
+}
