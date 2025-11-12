@@ -17,3 +17,52 @@ function saveTasks() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
   console.log('[SAVE] Tasks saved to localStorage:', tasks);
 }
+
+// loadTasks: try to read from localStorage; if broken or empty, return [].
+function loadTasks() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  try {
+    const parsed = raw ? JSON.parse(raw) : [];
+    console.log('[LOAD] Raw from storage:', raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    console.log('[LOAD] JSON parse failed. Starting fresh []');
+    return [];
+  }
+}
+
+// todayISO: gives "YYYY-MM-DD" for today's date to compare deadlines easily.
+function todayISO() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0); // set time to midnight so day compares are clean
+  const iso = d.toISOString().slice(0, 10);
+  console.log('[DATE] Today ISO:', iso);
+  return iso;
+}
+
+// isOverdue: true if deadline is before today AND task is not completed
+function isOverdue(task) {
+  if (task.status === 'Completed') return false;    // completed tasks aren't overdue
+  if (!task.deadline) return false;                 // safety: no date, no overdue
+  const t = todayISO();                             // get today's date (YYYY-MM-DD)
+  const overdue = task.deadline < t;                // compare strings like "2025-11-11"
+  console.log('[CHECK] Is task overdue?', { name: task.name, deadline: task.deadline, today: t, overdue });
+  return overdue;
+}
+
+// applyAutoOverdue: walk through tasks; if any should be overdue, set it.
+function applyAutoOverdue() {
+  let changed = false;
+  tasks = tasks.map(t => {
+    if (isOverdue(t) && t.status !== 'Overdue') {
+      console.log('[AUTO] Marking Overdue:', t.name);
+      changed = true;
+      return { ...t, status: 'Overdue' };
+    }
+    return t;
+  });
+  if (changed) {
+    saveTasks();
+    console.log('[AUTO] Overdue applied to some tasks.');
+  }
+}
