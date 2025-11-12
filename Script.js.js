@@ -237,3 +237,62 @@ function clearAllTasks() {
     render();
   }
 }
+
+/* ========= 6) EVENT LISTENERS ========= */
+// When the add-task form is submitted, read inputs and call addTask.
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const name = nameInput.value.trim();
+  const category = categoryInput.value;
+  const deadline = deadlineInput.value;   // "YYYY-MM-DD"
+  const status = statusInput.value;
+
+  console.log('[FORM] Submit clicked with:', { name, category, deadline, status });
+
+  if (!name || !category || !deadline || !status) {
+    alert('Please fill in all fields (by-TN).');
+    console.log('[FORM] Missing field(s).');
+    return;
+  }
+
+  addTask(name, category, deadline, status);
+
+  // reset form inputs for user convenience
+  nameInput.value = '';
+  categoryInput.value = '';
+  deadlineInput.value = '';
+  statusInput.value = 'In Progress';
+  nameInput.focus();
+  console.log('[FORM] Reset complete.');
+});
+
+// Change filters: just re-render.
+filterStatus.addEventListener('change', () => {
+  console.log('[FILTER] Status changed to:', filterStatus.value);
+  render();
+});
+filterCategory.addEventListener('change', () => {
+  console.log('[FILTER] Category changed to:', filterCategory.value);
+  render();
+});
+
+// Clear filter button sets both to "All".
+clearFiltersBtn.addEventListener('click', () => {
+  filterStatus.value = 'All';
+  filterCategory.value = 'All';
+  console.log('[FILTER] Cleared.');
+  render();
+});
+
+// Clear ALL tasks button
+clearAllBtn.addEventListener('click', clearAllTasks);
+
+/* ========= 7) INITIALIZE ========= */
+// On first load: render everything. Also keep auto-overdue fresh every minute.
+render();
+setInterval(() => {
+  applyAutoOverdue();
+  render();
+}, 60 * 1000);
+console.log('[INIT] App started.');
