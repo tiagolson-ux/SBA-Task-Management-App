@@ -66,3 +66,26 @@ function applyAutoOverdue() {
     console.log('[AUTO] Overdue applied to some tasks.');
   }
 }
+
+/* ========= 3) GET DOM ELEMENTS ========= */
+// We grab all the important page elements once (by IDs).
+const form = document.getElementById('task-form');
+const nameInput = document.getElementById('taskName');
+const categoryInput = document.getElementById('category');
+const deadlineInput = document.getElementById('deadline');
+const statusInput = document.getElementById('status');
+const addBtn = document.getElementById('addTaskBtn');
+
+const filterStatus = document.getElementById('filterStatus');
+const filterCategory = document.getElementById('filterCategory');
+const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+const clearAllBtn = document.getElementById('clearAllBtn');
+
+const tbody = document.getElementById('taskTableBody');
+
+const countAll = document.getElementById('countAll');
+const countInProgress = document.getElementById('countInProgress');
+const countCompleted = document.getElementById('countCompleted');
+const countOverdue = document.getElementById('countOverdue');
+
+console.log('[DOM] Elements wired.');
