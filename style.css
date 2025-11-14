@@ -28,8 +28,6 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 }
 
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
-@media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
 
 label { font-size: 0.9rem; color: var(--muted); display: grid; gap: 0.35rem; }
 input, select {
@@ -59,6 +57,7 @@ tr:hover { background: #0b1220; }
 .badge.completed { background: #0b1f2a; color: var(--accent); border-color: #0e7490; }
 .badge.overdue { background: #2a0f0f; color: #ffb4b4; border-color: #7f1d1d; }
 
-.action-select, .action-btn { padding: 0.4rem 0.5rem; border-radius: 8px; border: 1px solid var(--border); background: #0b1220; color: var(--text); }
+.action-select, .action-btn { padding: 0.4rem 0.5rem; border-radius: 8px; border: 1px solid var(--border); background: #0b1221; color: var(--text); }
 .action-btn { cursor: pointer; }
 .action-btn:hover { border-color: var(--accent); }
+
