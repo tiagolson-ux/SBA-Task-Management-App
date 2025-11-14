@@ -1,6 +1,6 @@
 // Task Management App (by-TN)
 // - Show tasks on the page (DOM)- Let user add tasks with a form- Let user update task status via a dropdown.
-// - Automatically mark "Overdue" if deadline has passed (unless Completed)- Filter by status or category- Save tasks in localStorage so they survive refresh.
+// Thank God for Prettier
 
 /* ========= 1) STORAGE KEYS + STATE ========= */
 // STORAGE_KEY: a short name where we save our tasks in the browser.
@@ -11,7 +11,7 @@ const STORAGE_KEY = 'tn_tasks_v1';
 let tasks = loadTasks();
 console.log('[INIT] Loaded tasks from localStorage:', tasks);
 
-/* ========= 2) HELP FUNCTIONS ========= */
+/* ========= 2) HELP FUNCTIONS/TN Learning to get her functions right!!! ========= */
 // saveTasks: turn tasks array into text and store it in localStorage.
 function saveTasks() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
@@ -31,7 +31,7 @@ function loadTasks() {
   }
 }
 
-// todayISO: gives "YYYY-MM-DD" for today's date to compare deadlines easily.
+// todayISO: gives "YYYY-MM-DD" for today's date to compare deadlines easily, so let's make sure this is right girl.
 function todayISO() {
   const d = new Date();
   d.setHours(0, 0, 0, 0); // set time to midnight so day compares are clean
@@ -40,7 +40,7 @@ function todayISO() {
   return iso;
 }
 
-// isOverdue: true if deadline is before today AND task is not completed
+// isOverdue: true if deadline is before today AND task is not completed-the if's are so vague
 function isOverdue(task) {
   if (task.status === 'Completed') return false;    // completed tasks aren't overdue
   if (!task.deadline) return false;                 // safety: no date, no overdue
@@ -67,7 +67,7 @@ function applyAutoOverdue() {
   }
 }
 
-/* ========= 3) GET DOM ELEMENTS ========= */
+/* ========= 3) GET DOM ELEMENTS/I want to make sure I understand this better ========= */
 // We grab all the important page elements once (by IDs).
 const form = document.getElementById('task-form');
 const nameInput = document.getElementById('taskName');
@@ -90,7 +90,7 @@ const countOverdue = document.getElementById('countOverdue');
 
 console.log('[DOM] Elements wired.');
 
-/* ========= 4) RENDER HELPERS ========= */
+/* ========= 4) RENDER HELPE ========= */
 // badgeFor: returns a tiny colored label for a given status.
 function badgeFor(status) {
   if (status === 'Completed') return `<span class="badge completed">Completed</span>`;
@@ -296,3 +296,4 @@ setInterval(() => {
   render();
 }, 60 * 1000);
 console.log('[INIT] App started.');
+
