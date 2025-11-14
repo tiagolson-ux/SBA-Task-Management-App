@@ -7,86 +7,182 @@
     <title>Task Manager (by-TN)</title>
 
     <link rel="stylesheet" href="style.css" />
-
     <script src="app.js" defer></script>
   </head>
   <body>
     <header class="app-header">
       <h1> Task Manager <span class="tiny">(by-TN)</span></h1>
-      <p class="subtitle">Add tasks, pick category, set deadline, update status. Auto-Overdue + Filters + Saved in your browser.</p>
+      <p class="subtitle">
+        Add tasks, pick category, set deadline, update status. Auto-Overdue + Filters + Saved in your browser.
+      </p>
     </header>
 
     <main class="container">
+    
       <section class="card">
         <h2>Add a Task</h2>
+
         <form id="task-form">
           <div class="grid">
-            <label>Task Name
-              <input id="taskName" type="text" placeholder="e.g., Finish resume" required />
-            </label>
 
-            <label>Category
-              <select id="category" required>
-                <option value="" disabled selected>Select one</option>
-                <option>Work</option>
-                <option>Personal</option>
-                <option>School</option>
-                <option>Other</option>
-              </select>
-            </label>
+            <!-- Task Name -->
+            <div class="field">
+              <label for="taskName" class="field-label">Task Name</label>
+              <div class="field-control">
+                <input
+                  id="taskName"
+                  type="text"
+                  placeholder="e.g., Finish resume"
+                  required
+                />
+              </div>
+            </div>
 
-            <label>Deadline
-              <input id="deadline" type="date" required />
-            </label>
+            <!-- Category (radio buttonss) -->
+            <div class="field">
+              <p class="field-label">Category</p>
+              <div class="field-control category-group" id="categoryGroup">
+                <label class="choice">
+                  <input type="radio" name="category" value="Work" required />
+                  <span>Work</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="category" value="Personal" />
+                  <span>Personal</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="category" value="School" />
+                  <span>School</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="category" value="Other" />
+                  <span>Other</span>
+                </label>
+              </div>
+            </div>
 
-            <label>Status
-              <select id="status" required>
-                <option>In Progress</option>
-                <option>Completed</option>
-              </select>
-            </label>
+            <!-- Deadline -->
+            <div class="field">
+              <label for="deadline" class="field-label">Deadline</label>
+              <div class="field-control">
+                <input id="deadline" type="date" required />
+              </div>
+            </div>
+
+          
+            <div class="field">
+              <p class="field-label">Status</p>
+              <div class="field-control status-group" id="statusGroup">
+                <label class="choice">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="In Progress"
+                    required
+                  />
+                  <span>In Progress</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="status" value="Completed" />
+                  <span>Completed</span>
+                </label>
+              </div>
+            </div>
           </div>
 
-          <button id="addTaskBtn" class="btn primary" type="submit">➕ Add Task</button>
+          <div class="form-actions">
+            <button id="addTaskBtn" class="btn primary" type="submit">
+              ➕ Add Task
+            </button>
+          </div>
         </form>
       </section>
 
+      <!-- ================= Filter Tasks Card ================= -->
       <section class="card">
         <h2>Filter Tasks</h2>
+
         <div class="grid">
-          <label>Status
-            <select id="filterStatus">
-              <option value="All" selected>All</option>
-              <option>In Progress</option>
-              <option>Completed</option>
-              <option>Overdue</option>
-            </select>
-          </label>
 
-          <label>Category
-            <select id="filterCategory">
-              <option value="All" selected>All</option>
-              <option>Work</option>
-              <option>Personal</option>
-              <option>School</option>
-              <option>Other</option>
-            </select>
-          </label>
+          <!-- Filter by Status -->
+          <div class="field">
+            <p class="field-label">Filter by Status</p>
+            <div class="field-control filter-group" id="filterStatusGroup">
+              <button type="button" class="chip chip-active" data-status="All">
+                All
+              </button>
+              <button type="button" class="chip" data-status="In Progress">
+                In Progress
+              </button>
+              <button type="button" class="chip" data-status="Completed">
+                Completed
+              </button>
+              <button type="button" class="chip" data-status="Overdue">
+                Overdue
+              </button>
+            </div>
+          </div>
 
-          <button id="clearFiltersBtn" class="btn">Clear Filters</button>
-          <button id="clearAllBtn" class="btn danger">🗑️ Clear ALL Tasks</button>
+       
+          <div class="field">
+            <p class="field-label">Filter by Category</p>
+            <div class="field-control filter-group" id="filterCategoryGroup">
+              <button type="button" class="chip chip-active" data-category="All">
+                All
+              </button>
+              <button type="button" class="chip" data-category="Work">
+                Work
+              </button>
+              <button type="button" class="chip" data-category="Personal">
+                Personal
+              </button>
+              <button type="button" class="chip" data-category="School">
+                School
+              </button>
+              <button type="button" class="chip" data-category="Other">
+                Other
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter Buttons -->
+          <div class="field">
+            <div class="field-control filter-actions">
+              <button id="clearFiltersBtn" class="btn" type="button">
+                Clear Filters
+              </button>
+              <button id="clearAllBtn" class="btn danger" type="button">
+                🗑️ Clear ALL Tasks
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
     
       <section class="counts">
-        <span id="countAll">All: 0</span>
-        <span id="countInProgress">In Progress: 0</span>
-        <span id="countCompleted">Completed: 0</span>
-        <span id="countOverdue">Overdue: 0</span>
+        <div class="count-box" id="countAllBox">
+          <strong>All:</strong>
+          <span class="count-number count-all">0</span>
+        </div>
+
+        <div class="count-box" id="countInProgressBox">
+          <strong>In Progress:</strong>
+          <span class="count-number count-in-progress">0</span>
+        </div>
+
+        <div class="count-box" id="countCompletedBox">
+          <strong>Completed:</strong>
+          <span class="count-number count-completed">0</span>
+        </div>
+
+        <div class="count-box" id="countOverdueBox">
+          <strong>Overdue:</strong>
+          <span class="count-number count-overdue">0</span>
+        </div>
       </section>
 
-
+      <!-- ================= Tasks Table ================= -->
       <section class="card">
         <h2>Tasks</h2>
         <div class="table-wrap">
